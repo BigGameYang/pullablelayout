@@ -9,7 +9,7 @@ import com.yz.pullable.PullableLayout;
  * Created by YangZhi on 2017/4/9 20:23.
  */
 
-public abstract class BaseRefreshHeaderBehabior implements RefreshHeaderBehavior{
+public abstract class BaseRefreshHeaderBehavior implements RefreshHeaderBehavior{
 
     private int currentState=-1;
 
@@ -21,7 +21,7 @@ public abstract class BaseRefreshHeaderBehabior implements RefreshHeaderBehavior
 
     private RefreshListener refreshListener;
 
-    public BaseRefreshHeaderBehabior(PullableLayout pullableLayout){
+    public BaseRefreshHeaderBehavior(PullableLayout pullableLayout){
         this.pullableLayout=pullableLayout;
         pullableLayout.getSetting().setOverScrollEnable(true);
         pullableLayout.getSetting().setCustomOverScroll(true);

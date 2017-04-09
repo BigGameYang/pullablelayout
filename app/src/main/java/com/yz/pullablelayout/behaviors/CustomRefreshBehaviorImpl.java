@@ -1,13 +1,11 @@
 package com.yz.pullablelayout.behaviors;
 
-import android.animation.ValueAnimator;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.yz.pullable.PullBehavior;
 import com.yz.pullable.PullableLayout;
-import com.yz.pullable.support.BaseRefreshHeaderBehabior;
+import com.yz.pullable.support.BaseRefreshHeaderBehavior;
 import com.yz.pullablelayout.DisplayUtils;
 import com.yz.pullablelayout.R;
 import com.yz.pullablelayout.ViewUtils;
@@ -16,7 +14,7 @@ import com.yz.pullablelayout.ViewUtils;
  * Created by YangZhi on 2017/4/9 3:54.
  */
 
-public class CustomRefreshBehaviorImpl extends BaseRefreshHeaderBehabior implements Runnable{
+public class CustomRefreshBehaviorImpl extends BaseRefreshHeaderBehavior implements Runnable{
 
 
     int height;
