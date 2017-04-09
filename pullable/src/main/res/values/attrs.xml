@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PullableLayout">
+        <attr name="scrollViewId" format="reference"></attr>
+        <attr name="headerViewId" format="reference"></attr>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yz.pullable.PullableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pullableLayout"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:scrollViewId="@+id/viewpager"
+    app:headerViewId="@+id/ivImage"
+    >
+    
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:src="@mipmap/bg_img"
+        android:scaleType="centerCrop"
+        />
+    <LinearLayout
+        android:id="@+id/tab"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="250dp"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:text="列表"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/tab_text_color_selecor"
+            />
+        <TextView
+            android:text="下拉刷新"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/tab_text_color_selecor"
+            />
+        <TextView
+            android:text="列表"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/tab_text_color_selecor"
+            />
+    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="298dp"
+        />
+</com.yz.pullable.PullableLayout>

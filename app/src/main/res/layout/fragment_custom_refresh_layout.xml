@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yz.pullable.PullableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pullableLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    app:headerViewId="@+id/ivImage"
+    app:scrollViewId="@+id/rvList">
+
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:src="@mipmap/bg_img"
+        android:scaleType="centerCrop"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ivImage"
+        android:layout_marginTop="250dp" />
+
+    <include layout="@layout/layout_custom_refresh_header"/>
+</com.yz.pullable.PullableLayout>
