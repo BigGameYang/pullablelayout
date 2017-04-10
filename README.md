@@ -1,8 +1,6 @@
 # PullableLayout
 
-一个嵌套下拉滑动的辅助控件 , 不需要使用者关心嵌套的触摸事件传递问题 ，
-
-可简单自定义各种头部滑动中的 UI 行为 。
+一个嵌套下拉滑动的辅助控件 , 不需要使用者关心嵌套的触摸事件传递问题 ，可简单自定义各种头部滑动中的 UI 行为 。
 
 ### 已提供功能支持 :
 
@@ -83,11 +81,9 @@ XML :
 
 Java 代码 :
 
-如果只是需要过度下拉 ，则不用配置任何 Java 代码 ，会有默认的多度下拉实现
+如果只是需要过度下拉 ，则不用配置任何 Java 代码 ，会有默认的过度下拉实现 。
 
-如果需要自定义头部过度下拉则需要实现 [**PullBehavior**](https://github.com/BigGameYang/pullablelayout/blob/master/pullable/src/main/java/com/yz/pullable/PullBehavior.java) 接口 , 该接口为滑动中的各种 UI
-
-行为实现 。
+如果需要自定义头部过度下拉则需要实现 [**PullBehavior**](https://github.com/BigGameYang/pullablelayout/blob/master/pullable/src/main/java/com/yz/pullable/PullBehavior.java) 接口 , 该接口为滑动中的各种 UI 行为实现 。
 
 ```
 public interface PullBehavior {
