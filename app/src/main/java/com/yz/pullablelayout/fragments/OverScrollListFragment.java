@@ -8,19 +8,17 @@ import com.yz.pullablelayout.R;
 import com.yz.pullablelayout.viewholder.PullableLayoutViewHolder;
 
 /**
- * 普通默认 Demo 页面
- * Created by YangZhi on 2017/4/10 11:13.
+ * 自定义过度下拉页面
+ * Created by YangZhi on 2017/4/7 3:11.
  */
 
-public class NormalListFragment extends ListFragment{
+public class OverScrollListFragment extends NormalListFragment{
 
-
-    PullableLayoutViewHolder pullableLayoutViewHolder;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        pullableLayoutViewHolder=new PullableLayoutViewHolder(view);
+        getPullableLayoutViewHolder().initNormal();
     }
 
 
@@ -28,9 +26,4 @@ public class NormalListFragment extends ListFragment{
         return pullableLayoutViewHolder;
     }
 
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.layout_image_header_list;
-    }
 }

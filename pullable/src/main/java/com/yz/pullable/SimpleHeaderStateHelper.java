@@ -36,7 +36,7 @@ public class SimpleHeaderStateHelper implements HeaderStateHelper{
 
     @Override
     public boolean isHeadOnShow() {
-        return getScrollY()<getHeadHeight();
+        return getScrollY()<(getSetting().getMaxHeadScrollDistance()!=-1?getSetting().getMaxHeadScrollDistance():getHeadHeight());
     }
 
     @Override

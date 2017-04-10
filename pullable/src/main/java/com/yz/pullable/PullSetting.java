@@ -6,9 +6,11 @@ package com.yz.pullable;
 
 public class PullSetting {
 
-    private static final int OVER_SCROLL_REST_TIME = 400;
+    private static final int OVER_SCROLL_REST_TIME = 200;
 
     private static final float DRAG_RATE = .65f;
+
+    private int maxHeadScrollDistance=-1;
 
     private int overScrollRestTime=OVER_SCROLL_REST_TIME;
 
@@ -26,6 +28,13 @@ public class PullSetting {
 
     private boolean debug;
 
+    /**
+     * 设置头部最大滑动距离
+     * @param maxHeadScrollDistance
+     */
+    public void setMaxHeadScrollDistance(int maxHeadScrollDistance) {
+        this.maxHeadScrollDistance = maxHeadScrollDistance;
+    }
 
     /**
      * 设置自定义的过度下拉
@@ -105,6 +114,9 @@ public class PullSetting {
         this.debug = debug;
     }
 
+    public int getMaxHeadScrollDistance() {
+        return maxHeadScrollDistance;
+    }
 
     public boolean isCustomOverScroll() {
         return isCustomOverScroll;

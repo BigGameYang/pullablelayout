@@ -27,13 +27,22 @@ public class Demo {
 
 
     public static Demo obtain(String name,Class fragmentClass){
-        return obtain(name,null,fragmentClass);
+        return obtain(name,true,fragmentClass);
+    }
+
+    public static Demo obtain(String name,boolean isContentMarginTop,Class fragmentClass){
+        Bundle bundle=new Bundle();
+        bundle.putInt(DemoConstants.STR_PARAM_LIST_TYPE,DemoConstants.DEMO_NORMAL_LIST);
+        bundle.putBoolean(DemoConstants.STR_PARAM_CONTENT_MARGIN_TOP,isContentMarginTop);
+        return obtain(name,bundle,fragmentClass);
     }
 
     public static Demo obtain(String name,Bundle arguments,Class fragmentClass){
         Demo demo=new Demo();
         demo.name=name;
-        demo.arguments=arguments;
+        if(arguments!=null) {
+            demo.arguments = new Bundle(arguments);
+        }
         demo.fragmentClass=fragmentClass;
         demo.isStartOther=true;
         return demo;

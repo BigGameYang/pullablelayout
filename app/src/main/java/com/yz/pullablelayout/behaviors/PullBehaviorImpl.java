@@ -9,6 +9,7 @@ import com.yz.pullable.PullBehavior;
 import com.yz.pullable.PullableLayout;
 
 /**
+ * 头部图片过度下拉放大的 PullBehavior 实现类
  * Created by yangzhi on 17/1/12.
  */
 
@@ -57,16 +58,6 @@ public class PullBehaviorImpl implements PullBehavior{
 
     @Override
     public void startFling(View target, int velocityX, int velocityY) {
-        if(target instanceof RecyclerView){
-            final RecyclerView recyclerView=(RecyclerView)target;
-            recyclerView.fling(velocityX,velocityY);
-            recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
-                @Override
-                public boolean onFling(int velocityX, int velocityY) {
-                    Log.d("PullBehaviorImpl","fling velocityY="+velocityY+",firtViewHolder="+recyclerView.findViewHolderForAdapterPosition(0));
-                    return false;
-                }
-            });
-        }
+
     }
 }

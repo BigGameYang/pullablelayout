@@ -10,10 +10,11 @@ import com.yz.pullablelayout.R;
 import com.yz.pullablelayout.behaviors.CustomRefreshBehaviorImpl;
 
 /**
+ * 自定义下拉刷新页面
  * Created by YangZhi on 2017/4/9 4:21.
  */
 
-public class CustomRefreshFragment extends NormalListFragment {
+public class CustomRefreshFragment extends OverScrollListFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -31,6 +32,6 @@ public class CustomRefreshFragment extends NormalListFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_custom_refresh_layout;
+        return R.layout.fragment_custom_refresh;
     }
 }

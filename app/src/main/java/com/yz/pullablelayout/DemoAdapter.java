@@ -65,7 +65,7 @@ public class DemoAdapter extends RecyclerView.Adapter<DemoAdapter.ViewHolder>{
 
 
     private void startToOther(Context context,Demo demo){
-        ContainerActivity.goPage(context,demo.getArguments(),demo.getFragmentClass());
+        ContainerActivity.goPage(context,demo.getName(),demo.getArguments(),demo.getFragmentClass());
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{

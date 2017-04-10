@@ -1,5 +1,7 @@
 package com.yz.pullable;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
@@ -15,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.OverScroller;
@@ -37,9 +40,9 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
 
     private TargetStateHelper targetStateHelper;
 
-    private OverScroller mScroller;
-
     private OverScroller flingScroller;
+
+    private ValueAnimator resetOverScrollAnimator;
 
     private Record record;
 
@@ -88,7 +91,6 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
 
 
     private void init(AttributeSet attrs) {
-        mScroller = new OverScroller(getContext());
         flingScroller = new OverScroller(getContext());
         nestedScrollingParentHelper = new NestedScrollingParentHelper(this);
         nestedScrollingChildHelper = new NestedScrollingChildHelper(this);
@@ -300,19 +302,14 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
                 }
                 eventAddedToVelocityTracker = true;
                 behaviorHelper.dispatchOnPullEnd(this);
-                if (record.isBeginVeticalDrag() && headerStateHelper.isHeadOnOverPull()) {
-//                    fling(1000);
-                    if(getSetting().isAutoEndOverScroll()) {
-                        endOverScroll();
-                    }
-                    record.setBeginVeticalDrag(false);
-                    record.setBeginHorizontalDrag(false);
-                }else {
+
+                if(record.isBeginVeticalDrag()&&!headerStateHelper.isHeadOnOverPull()){
                     mVelocityTracker.addMovement(ev);
                     mVelocityTracker.computeCurrentVelocity(1000, mMaxFlingVelocity);
                     float velocityY=-mVelocityTracker.getYVelocity(pointerIndex);
                     fling((int)velocityY);
                 }
+
                 mActivePointerId = INVALID_POINTER;
                 resetTouch();
                 break;
@@ -332,6 +329,13 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
 
 
     private void resetTouch() {
+        if (record.isBeginVeticalDrag() && headerStateHelper.isHeadOnOverPull()) {
+            if(getSetting().isAutoEndOverScroll()) {
+                endOverScroll();
+            }
+        }
+        record.setBeginVeticalDrag(false);
+        record.setBeginHorizontalDrag(false);
         if (mVelocityTracker != null) {
             mVelocityTracker.clear();
         }
@@ -342,8 +346,6 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
     }
 
     private void onTouchEnd() {
-        record.setBeginVeticalDrag(false);
-        record.setBeginHorizontalDrag(false);
         mActivePointerId = INVALID_POINTER;
     }
 
@@ -466,7 +468,7 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
         log("NestedScrollingParent " + "onNestedScrollAccepted");
         mNestedScrollInProgress = true;
         nestedScrollingParentHelper.onNestedScrollAccepted(child, target, nestedScrollAxes);
-        mScroller.forceFinished(true);
+        cancelResetOverScrollAnim();
 
     }
 
@@ -609,21 +611,64 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
 
     public void fling(int velocityY) {
         log("fling " + "start fling velocityY=" + velocityY + ",mNestedFlingTarget=" + mNestedFlingTarget);
+        cancelResetOverScrollAnim();
         flingScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, 0, headerStateHelper.getHeadHeight());
         invalidate();
     }
+
+
 
 
     /**
      * 自动将 OverScroll 回滚到预设的偏移状态
      */
     public void endOverScroll(int finalOverScrollHeight) {
-        int startY=getSetting().isCustomOverScroll()?-record.getOverScrollHeight():getScrollY();
-        int currentOverScrollHeight=getSetting().isCustomOverScroll()?record.getOverScrollHeight():-getScrollY();
-        int dy=currentOverScrollHeight-finalOverScrollHeight;
-        mScroller.forceFinished(true);
-        mScroller.startScroll(0, startY, 0, dy, getSetting().getOverScrollRestTime());
-        invalidate();
+        cancelResetOverScrollAnim();
+        final int currentOverScrollHeight=getSetting().isCustomOverScroll()?record.getOverScrollHeight():-getScrollY();
+        resetOverScrollAnimator =ValueAnimator.ofInt(-currentOverScrollHeight,finalOverScrollHeight);
+        resetOverScrollAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            int lastValue=currentOverScrollHeight;
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int value=(int)animation.getAnimatedValue();
+                if(value!=lastValue){
+                    overScrollToHead(value);
+                    lastValue=value;
+                }
+            }
+        });
+        resetOverScrollAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                resetOverScrollAnimator.removeAllUpdateListeners();
+                resetOverScrollAnimator.removeAllListeners();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        resetOverScrollAnimator.setInterpolator(new DecelerateInterpolator());
+        resetOverScrollAnimator.setDuration(getSetting().getOverScrollRestTime());
+        resetOverScrollAnimator.start();
+
+    }
+
+    private void cancelResetOverScrollAnim(){
+        if(resetOverScrollAnimator !=null&& resetOverScrollAnimator.isStarted()){
+            resetOverScrollAnimator.cancel();
+        }
     }
 
 
@@ -649,8 +694,10 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
             }
         }
 
-        if (y > headerStateHelper.getHeadHeight()) {
-            y = headerStateHelper.getHeadHeight();
+        final int maxScrollHeadDistance= getSetting().getMaxHeadScrollDistance()!=-1?getSetting().getMaxHeadScrollDistance():headerStateHelper.getHeadHeight();
+
+        if (y > maxScrollHeadDistance) {
+            y = maxScrollHeadDistance;
         }
         if (y != getScrollY()) {
             super.scrollTo(x, y);
@@ -665,13 +712,7 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
 
     @Override
     public void computeScroll() {
-        log("computeScroll mScroller.computeScrollOffset()=" + mScroller.computeScrollOffset() + ",scrollY=" + getScrollY() + ",currentY=" + mScroller.getCurrY() + ",currentVelocity" + mScroller.getCurrVelocity());
-        if (mScroller.computeScrollOffset()) {
-//            scrollTo(0, mScroller.getCurrY());
-            overScrollToHead(mScroller.getCurrY());
-            invalidate();
-            return;
-        }
+
         boolean computeFlingOffset = flingScroller.computeScrollOffset();
         log("computeScroll flingScroller.computeScrollOffset()=" + computeFlingOffset + ",scrollY=" + getScrollY() + ",currentY=" + flingScroller.getCurrY() + ",currentVelocity" + flingScroller.getCurrVelocity() + ",isHeadOnShow=" + headerStateHelper.isHeadOnShow());
         if (!computeFlingOffset) {
@@ -680,6 +721,7 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
         if (getScrollY() != flingScroller.getCurrY() || headerStateHelper.isHeadOnShow()) {
             log("computeScroll flingScroller scrollTo");
             scrollTo(0, flingScroller.getCurrY());
+            behaviorHelper.dispatchOnPull(this,getScrollY());
             invalidate();
             return;
         }

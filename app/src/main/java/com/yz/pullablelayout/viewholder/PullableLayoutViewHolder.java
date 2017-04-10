@@ -8,6 +8,7 @@ import com.yz.pullable.PullSetting;
 import com.yz.pullable.PullableLayout;
 import com.yz.pullablelayout.R;
 import com.yz.pullablelayout.ViewUtils;
+import com.yz.pullablelayout.behaviors.FlingBehaviorImpl;
 import com.yz.pullablelayout.behaviors.PullBehaviorImpl;
 
 /**
@@ -23,6 +24,8 @@ public class PullableLayoutViewHolder {
     public PullableLayoutViewHolder(View rootView){
         this.rootView=rootView;
         pullableLayout = ViewUtils.findViewById(rootView, R.id.pullableLayout);
+        pullableLayout.addBehavior(new FlingBehaviorImpl());
+        pullableLayout.getSetting().setDebug(true);
     }
 
     public void initNormal(){

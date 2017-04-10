@@ -3,5 +3,5 @@
     android:id="@+id/refrshlayout"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/layout_nestedscroll_list"/>
+    <include layout="@layout/layout_image_header_list"/>
 </android.support.v4.widget.SwipeRefreshLayout>

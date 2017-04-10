@@ -11,6 +11,7 @@ import com.yz.pullablelayout.R;
 import com.yz.pullablelayout.ViewUtils;
 
 /**
+ * 自定义下拉刷新 PullBehavior 实现类
  * Created by YangZhi on 2017/4/9 3:54.
  */
 

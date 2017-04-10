@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * ViewPager 页面
  * Created by YangZhi on 2017/4/4 6:07.
  */
 
@@ -45,6 +46,7 @@ public class PagerFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         viewPager=findViewById(view, R.id.viewpager);
         pullableLayout =findViewById(view,R.id.pullableLayout);
+        pullableLayout.getSetting().setDebug(true);
         ivImage=findViewById(view,R.id.ivImage);
         tab=findViewById(view,R.id.tab);
         viewPager=findViewById(view,R.id.viewpager);

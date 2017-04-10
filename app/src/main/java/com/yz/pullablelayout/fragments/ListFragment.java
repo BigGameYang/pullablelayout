@@ -9,12 +9,13 @@ import com.yz.pullablelayout.DemoConstants;
 import com.yz.pullablelayout.viewholder.ListViewHolder;
 
 /**
+ * 简单的 列表页面
  * Created by YangZhi on 2017/4/4 5:55.
  */
 
 public class ListFragment extends BaseFragment {
 
-    public static final String STR_PARAM_LIST_TYPE="param_list_type";
+    public static final String STR_PARAM_LIST_TYPE=DemoConstants.STR_PARAM_LIST_TYPE;
 
     public static ListFragment newInstance(int type){
         ListFragment listFragment=new ListFragment();

@@ -9,6 +9,7 @@ import com.yz.pullablelayout.R;
 import com.yz.pullablelayout.viewholder.SwipeRefreshLayoutViewHolder;
 
 /**
+ * 普通的下拉刷新滑动页面
  * Created by YangZhi on 2017/4/4 6:01.
  */
 
