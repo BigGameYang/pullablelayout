@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -51,7 +51,7 @@ publish {
     groupId = 'com.yz'
     artifactId = 'PullableLayout'
     publishVersion = '0.0.1'
-    desc = 'Powerful pull helper for android'
+    desc = 'Powerful pull helper lib for android'
     website = 'https://github.com/BigGameYang/pullablelayout'
 
     bintrayUser = 'yangzhi'
