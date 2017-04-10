@@ -1,10 +1,10 @@
-#PullableLayout
+# PullableLayout
 
 一个嵌套下拉滑动的辅助控件 , 不需要使用者关心嵌套的触摸事件传递问题 ，
 
 可简单自定义各种头部滑动中的 UI 行为 。
 
-###已提供功能支持 :
+### 已提供功能支持 :
 
 * 过度下拉，可自定义过度下拉头部行为 。
 
@@ -16,7 +16,7 @@
 
 * Fling 惯性滑动状态的嵌套传递 。
 
-###接入 :
+### 接入 :
 
 根目录 build.gradle 引入 jcenter 仓库
 
@@ -34,7 +34,7 @@ compile 'com.yz:PullableLayout:0.0.1'
 
 ```
 
-###基础使用:
+### 基础使用:
 
 以 [**PullableLayout**](https://github.com/BigGameYang/pullablelayout/blob/master/pullable/src/main/java/com/yz/pullable/PullableLayout.java) 为嵌套滑动 scrollView 控件的外层布局 ，
 
@@ -138,7 +138,7 @@ pullableLayout.addBehavior(behavior);
 ```
 为了让滑动中的行为更模块化 , [**PullableLayout**](https://github.com/BigGameYang/pullablelayout/blob/master/pullable/src/main/java/com/yz/pullable/PullableLayout.java) 支持重复 addBehavior 以同时支持多种不同的 UI 行为 。
 
-###自定义配置:
+### 自定义配置:
 
 可以通过如下代码获取到 [**PullableLayout**](https://github.com/BigGameYang/pullablelayout/blob/master/pullable/src/main/java/com/yz/pullable/PullableLayout.java) 的配置对象
 
@@ -230,7 +230,7 @@ PullSetting setting= pullableLayout.getSetting();
 
 ```
 
-###下拉刷新支持
+### 下拉刷新支持
 
 Demo 中已写了下拉刷新支持的写法
 
