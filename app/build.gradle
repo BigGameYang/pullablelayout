@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,7 +31,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
-    //    compile 'com.yz:pullable:0.1.0'
+//    compile 'com.yz:PullableLayout:0.0.1'
     compile project(':pullable')
 }
 
