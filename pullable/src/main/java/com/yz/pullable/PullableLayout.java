@@ -221,9 +221,13 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
                 float x = ev.getX();
                 beginHorizontalDrag(x, y);
                 if (record.isBeginHorizontalDrag() && !record.isBeginVeticalDrag()) {
+                    record.setLastY(y);
                     return false;
                 }
                 beginVeticalDrag(y);
+                if(!record.isBeginVeticalDrag()){
+                    record.setLastY(y);
+                }
                 break;
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
