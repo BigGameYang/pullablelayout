@@ -30,7 +30,7 @@
 Module build.gradle 依赖
 
 ```
-compile 'com.yz:PullableLayout:0.0.2'
+compile 'com.yz:PullableLayout:0.1.0'
 
 ```
 
