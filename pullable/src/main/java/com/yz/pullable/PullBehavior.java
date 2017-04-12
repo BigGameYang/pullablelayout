@@ -3,6 +3,7 @@ package com.yz.pullable;
 import android.view.View;
 
 /**
+ * 下拉与滑动过程的行为回调接口
  * Created by yangzhi on 17/1/11.
  */
 

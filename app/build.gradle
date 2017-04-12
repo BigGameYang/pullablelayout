@@ -31,7 +31,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
-//    compile 'com.yz:PullableLayout:0.0.2'
+//    compile 'com.yz:PullableLayout:0.1.0'
     compile project(':pullable')
 }
 

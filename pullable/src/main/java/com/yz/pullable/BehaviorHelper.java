@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 行为分发辅助类
  * Created by YangZhi on 2017/4/3 22:38.
  */
 

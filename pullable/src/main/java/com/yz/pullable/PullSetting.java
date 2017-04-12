@@ -1,6 +1,7 @@
 package com.yz.pullable;
 
 /**
+ * PullableLayout 的配置类
  * Created by YangZhi on 2017/4/9 2:48.
  */
 

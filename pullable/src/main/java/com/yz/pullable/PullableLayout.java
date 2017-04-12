@@ -23,6 +23,20 @@ import android.widget.FrameLayout;
 import android.widget.OverScroller;
 
 /**
+ * PullableLayout 是一个支持拥有头部并带内部嵌套滑动的辅助控件
+ *
+ * 能让使用者在处理相关滑动时 ，不需要再处理触摸事件和嵌套滑动问题 , 让使用者更多关心于与业务具体的 UI 实现上
+ *
+ * 1.支持过度下拉 {@link PullBehavior#onOverPullDown(PullableLayout, int)}
+ *
+ * 2.支持头部滑动中对头部的相关UI改变 {@link PullBehavior#onPull(PullableLayout, int)}
+ *
+ * 3.支持 NestedScroll 机制 , 参考 {@link NestedScrollingParent} 与 {@link NestedScrollingChild}
+ *
+ * 4.支持 下拉刷新实现 参考{@link com.yz.pullable.support.BaseRefreshHeaderBehavior}
+ *
+ * 5.支持嵌套滑动中的惯性传递 {@link PullBehavior#startFling(View, int, int)}
+ *
  * Created by YangZhi on 2017/4/3 1:24.
  */
 
@@ -115,7 +129,7 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
     private void ensureTargetAndHead(){
         View target=targetStateHelper.getTargetView();
         View head=headerStateHelper.getHeadView();
-        if(target!=null&&target!=null)
+        if(target!=null && head!=null)
             return;
         if (target==null&&scrollViewId != -1) {
             target = findViewById(scrollViewId);
@@ -160,7 +174,7 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
 
         MarginLayoutParams layoutParams=(MarginLayoutParams) targetStateHelper.getTargetView().getLayoutParams();
         final int targetTopMargin=layoutParams.topMargin;
-        final int otherHeight=targetTopMargin-headerStateHelper.getHeadHeight();
+        final int otherHeight=targetTopMargin-getMaxScrollHeadDistance();
 
         targetStateHelper.getTargetView().measure(MeasureSpec.makeMeasureSpec(
                 getMeasuredWidth() - getPaddingLeft() - getPaddingRight(),
@@ -349,6 +363,11 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
         mActivePointerId = INVALID_POINTER;
     }
 
+
+    /**
+     * 检测竖向滑动 满足要求 记录开启竖向滑动
+     * @param y
+     */
     private void beginVeticalDrag(float y) {
         final float diffY = y - record.getInitDownY();
         if (Math.abs(diffY) > mTouchSlop && headerStateHelper.isHeadOnShow() && !record.isBeginVeticalDrag()) {
@@ -357,6 +376,11 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
         }
     }
 
+    /**
+     * 检测横向滑动 满足要求 记录开启横向滑动
+     * @param x
+     * @param y
+     */
     private void beginHorizontalDrag(float x, float y) {
         final float diffY = y - record.getInitDownY();
         final float diffX = x - record.getInitDownX();
@@ -381,6 +405,9 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
 
     float rate = 1f;
 
+    /**
+     * 计算过度下拉高度的比率
+     */
     private void caculateRate() {
         int radioHeight = getSetting().getOverScrollDoublingHeight();
 
@@ -421,8 +448,7 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
 
     /**
      * 过度下拉
-     *
-     * @param dy
+     * @param dy y轴偏移量
      */
     private void overScrollByHead(int dy) {
         caculateRate();
@@ -431,6 +457,10 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
         overScrollToHead(scrollY);
     }
 
+    /**
+     * 过度下拉
+     * @param overScrollY 总过度下拉高度
+     */
     private void overScrollToHead(int overScrollY){
         int overScrollHeight;
         if(!getSetting().isCustomOverScroll()) {
@@ -522,8 +552,8 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
         log("NestedScrollingParent " + "onNestedPreFling velocityX=" + velocityX + ",velocityY=" + velocityY);
         mNestedFlingTarget = null;
         if (!headerStateHelper.isHeadOnShow()) {
-//            return dispatchNestedPreFling(velocityX, velocityY);
-            return false;
+            return dispatchNestedPreFling(velocityX, velocityY);
+//            return false;
         }
 
         if ((!getSetting().isOverScrollEnable()||!headerStateHelper.isHeadOnOverPull()) && Math.abs(velocityY) > mMinFlingVelocity) {
@@ -612,7 +642,7 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
     public void fling(int velocityY) {
         log("fling " + "start fling velocityY=" + velocityY + ",mNestedFlingTarget=" + mNestedFlingTarget);
         cancelResetOverScrollAnim();
-        flingScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, 0, headerStateHelper.getHeadHeight());
+        flingScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, 0, getMaxScrollHeadDistance());
         invalidate();
     }
 
@@ -684,17 +714,13 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
     public void scrollTo(int x, int y) {
 //        log("scrollTo y="+y);
         if(y<0){
-            if(getSetting().isOverScrollEnable()&&!getSetting().isCustomOverScroll()){
-                if (y < -headerStateHelper.getHeadHeight())
-                {
-                    y = -headerStateHelper.getHeadHeight();
-                }
-            }else {
+            if(!getSetting().isOverScrollEnable()||getSetting().isCustomOverScroll()){
+                //如果没有开启过度下拉或者开启自定义过度下拉，则滑动的最小y值为0
                 y=0;
             }
         }
 
-        final int maxScrollHeadDistance= getSetting().getMaxHeadScrollDistance()!=-1?getSetting().getMaxHeadScrollDistance():headerStateHelper.getHeadHeight();
+        final int maxScrollHeadDistance= getMaxScrollHeadDistance();
 
         if (y > maxScrollHeadDistance) {
             y = maxScrollHeadDistance;
@@ -719,6 +745,7 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
             return;
         }
         if (getScrollY() != flingScroller.getCurrY() || headerStateHelper.isHeadOnShow()) {
+            //如果头部还在显示就继续滑动头部
             log("computeScroll flingScroller scrollTo");
             scrollTo(0, flingScroller.getCurrY());
             behaviorHelper.dispatchOnPull(this,getScrollY());
@@ -729,11 +756,20 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
         int currentVelocity = (int) flingScroller.getCurrVelocity();
         log("fling mNestedFlingTarget=" + mNestedFlingTarget + ",currentVelocity=" + currentVelocity + ",mMinFlingVelocity=" + mMinFlingVelocity+",mMinFlingTargetVelocity="+mMinFlingTargetVelocity);
         if (mNestedFlingTarget != null && currentVelocity > mMinFlingTargetVelocity) {
+            //如果剩余速度大于最小惯性滑动子View的值则分发给PullBehavior去做惯性滑动
             log("fling dispatchFling");
             behaviorHelper.dispatchFling(mNestedFlingTarget, 0, currentVelocity);
         }
         mNestedFlingTarget = null;
         flingScroller.forceFinished(true);
+    }
+
+
+    private int getMaxScrollHeadDistance(){
+
+        int maxScrollHeadDistance= getSetting().getMaxHeadScrollDistance()!=-1?getSetting().getMaxHeadScrollDistance():headerStateHelper.getHeadHeight();
+
+        return maxScrollHeadDistance;
     }
 
     public void addBehavior(PullBehavior behavior) {
@@ -752,6 +788,7 @@ public class PullableLayout extends FrameLayout implements NestedScrollingParent
     @Override
     public boolean canScrollVertically(int direction) {
         if(direction<0){
+            //如果方向是下拉就判断头部是否显示完全了
             return !headerStateHelper.isHeadShowFull();
         }else {
             return super.canScrollVertically(direction);

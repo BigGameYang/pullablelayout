@@ -1,18 +1,20 @@
 # PullableLayout
 
-一个嵌套下拉滑动的辅助控件 , 不需要使用者关心嵌套的触摸事件传递问题 ，可简单自定义各种头部滑动中的 UI 行为 。
+是一个支持拥有头部并带有内部嵌套滑动的辅助控件
+
+能让使用者在处理相关滑动时 ，不需要再处理触摸事件和嵌套滑动问题 , 让使用者更多关心于与业务具体的 UI 实现上
 
 ### 已提供功能支持 :
 
 * 过度下拉，可自定义过度下拉头部行为 。
 
-* NestedScroll 嵌套滑动机制 。
+* 支持头部滑动中对头部的相关UI改变 。
+
+* NestedScroll 嵌套滑动机制 ,支持 NestedScrollingParent 与 NestedScrollingChild 。
 
 * 下拉刷新 。
 
-* 滑动过程中自定义头部UI行为 。
-
-* Fling 惯性滑动状态的嵌套传递 。
+* 支持嵌套滑动中的 Fling 惯性传递 。
 
 ### 接入 :
 
@@ -146,7 +148,16 @@ PullSetting setting= pullableLayout.getSetting();
 可配置方法为 :
 
 ```
-/**
+    /**
+     * 设置头部最大滑动距离
+     * @param maxHeadScrollDistance
+     */
+    public void setMaxHeadScrollDistance(int maxHeadScrollDistance) {
+        this.maxHeadScrollDistance = maxHeadScrollDistance;
+    }
+
+
+    /**
      * 设置自定义的过度下拉
      * 默认过度下拉是调用 PullableLayout 的 scrollTo 方法 垂直方向滑动到负值来实现
      * 如果设置该配置为 true 时，将不会使用默认过度下拉实现，而是需要使用者自定义的 PullBehavior onOverPullDown() 方法回调时写自己的实现

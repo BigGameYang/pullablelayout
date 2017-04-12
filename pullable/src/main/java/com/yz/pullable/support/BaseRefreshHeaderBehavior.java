@@ -6,6 +6,7 @@ import android.view.View;
 import com.yz.pullable.PullableLayout;
 
 /**
+ * 下拉刷新行为的实现类基类
  * Created by YangZhi on 2017/4/9 20:23.
  */
 

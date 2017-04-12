@@ -1,27 +1,55 @@
 package com.yz.pullable;
 
 /**
+ * 滑动过程的相关记录类
  * Created by YangZhi on 2017/4/3 16:50.
  */
 
 public class Record {
 
+    /**
+     * 初次按下的Y值
+     */
     private float initDownY;
 
+    /**
+     * 初次按下的X值
+     */
     private float initDownX;
 
+    /**
+     * 开始拖动的的Y值
+     */
     private float initDragY;
 
+    /**
+     * 开始拖动的Y值
+     */
     private float initDragX;
 
+    /**
+     * 最后一次触摸的X值
+     */
     private float lastX;
 
+    /**
+     * 最后一次触摸的Y值
+     */
     private float lastY;
 
+    /**
+     * 是否已开始竖向滑动
+     */
     private boolean isBeginVeticalDrag;
 
+    /**
+     * 是否已开始横向滑动
+     */
     private boolean isBeginHorizontalDrag;
 
+    /**
+     * 已过度下拉的距离
+     */
     private int overScrollHeight;
 
 
